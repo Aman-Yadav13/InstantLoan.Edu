@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Profile {
+  id        String    @id @default(uuid())
+  userId    String    @unique
+  name      String
+  imageUrl  String    @db.Text
+  email     String    @db.Text
+  phone     String?
+  dob       DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  family       Family?
+  documents    Document[]
+  applications LoanApplication[]
+}
+
+model Family {
+  id                 String  @id @default(uuid())
+  profileId          String  @unique
+  fatherName         String
+  motherName         String
+  guardianName       String?
+  annualIncome       Float
+  fatherAadhar       String?
+  motherAadhar       String?
+  guardianAadhar     String?
+  relationToGuardian String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile Profile @relation(fields: [profileId], references: [id])
+}
+
+model Document {
+  id           String       @id @default(uuid())
+  profileId    String
+  documentType DocumentType
+  documentUrl  String       @db.Text
+  status       String
+  remarks      String?
+
+  createdAt DateTime @default(now())
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@index([profileId, documentType], name: "unique_document")
+}
+
+model LoanApplication {
+  id              String  @id @default(uuid())
+  profileId       String
+  amountRequested Float
+  purpose         String
+  status          String
+  reason          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile  @relation(fields: [profileId], references: [id])
+
+  @@index([profileId], name: "unique_application")
+}
+
+enum DocumentType {
+  TENTH_MARKSHEET
+  TWELFTH_MARKSHEET
+  RATION_CARD
+  AADHAR_CARD
+  PROOF_OF_INCOME
+}
