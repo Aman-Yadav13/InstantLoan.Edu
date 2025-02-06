@@ -25,19 +25,18 @@ model Profile {
 }
 
 model Family {
-  id                 String  @id @default(uuid())
-  profileId          String  @unique
-  fatherName         String
-  motherName         String
-  guardianName       String?
-  annualIncome       Float
-  fatherAadhar       String?
-  motherAadhar       String?
-  guardianAadhar     String?
-  relationToGuardian String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id               String   @id @default(uuid())
+  profileId        String   @unique
+  fatherFirstName  String
+  motherFirstName  String
+  fatherLastName   String
+  motherLastName   String
+  fatherOccupation String
+  motherOccupation String
+  fatherIncome     Int
+  motherIncome     Int
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   profile Profile @relation(fields: [profileId], references: [id])
 }
@@ -72,9 +71,9 @@ model LoanApplication {
 }
 
 enum DocumentType {
-  TENTH_MARKSHEET
-  TWELFTH_MARKSHEET
-  RATION_CARD
-  AADHAR_CARD
-  PROOF_OF_INCOME
+  AADHARCARD
+  MARKSHEET10TH
+  MARKSHEET12TH
+  RATIONCARD
+  PROOFOFINCOME
 }

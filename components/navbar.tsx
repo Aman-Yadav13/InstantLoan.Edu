@@ -14,7 +14,7 @@ export const Navbar = () => {
   };
 
   return (
-    <div className="h-[45px] border-b border-b-gray-300 px-2 py-1 bg-indigo-900">
+    <div className="h-[45px] px-2 py-1 bg-indigo-900">
       <div className="flex items-center justify-between h-full">
         <div className="h-[20px]">
           <Image
@@ -30,6 +30,12 @@ export const Navbar = () => {
           <Button
             className="h-[34px] px-4 text-slate-700"
             variant="outline"
+            asChild
+          >
+            <Link href={"/loan/applications"}>Applications</Link>
+          </Button>
+          <Button
+            className="h-[34px] px-4 bg-green-700 hover:bg-green-800"
             asChild
           >
             <Link href={"/loan/apply"}>Apply</Link>
